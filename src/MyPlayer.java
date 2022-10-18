@@ -24,7 +24,7 @@ public class MyPlayer {
         row = 1;
         column = 1;
 
-        /***
+        /**
          * This code will run each time the "MyPlayer" button is pressed.
          * Add your code to return the row and the column of the chip you want to take.
          * You'll be returning a data type called Point which consists of two integers.
