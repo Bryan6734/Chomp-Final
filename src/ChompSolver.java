@@ -1,25 +1,37 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Test {
+public class ChompSolver {
 
-    static ArrayList<Board> boardStates = generateAllBoardStates();
-    static ArrayList<Board> losingBoards = new ArrayList<>();
-    static ArrayList<Board> winningBoards = new ArrayList<>();
+    public ArrayList<Board> boardStates;
+    public ArrayList<Board> losingBoards = new ArrayList<>();
+    public ArrayList<Board> winningBoards = new ArrayList<>();
 
-    public static void main(String[] args) {
-
-        determineBoardStates(boardStates);
-
-        System.out.println("Result Boards");
+    public ChompSolver(){
+        boardStates = generateAllBoardStates();
+        determineBoardStates();
         printEvaluatedBoards();
-
-//        printBoardStates();
-
     }
 
-    public static void determineBoardStates(ArrayList<Board> boardStates){
+
+    public int[] getMove(int[] currentBoard){
+
+        currentBoard = new int[] {currentBoard[0], currentBoard[1], currentBoard[2]};
+
+        for (Board board : boardStates){
+            if (Arrays.equals(board.boardState, currentBoard)){
+                return board.moveToMake;
+            }
+        }
+        return new int[] {0, 0};
+    }
+
+    /**
+     * Assigns a true/false winning value to all board objects inside the boardStates ArrayList
+     */
+    public void determineBoardStates(){
 
         // If any result board is a losing board, then the current board must be winning.
         // If all result boards are known winning boards, then the current board must be losing.
@@ -36,6 +48,7 @@ public class Test {
                 }
             }
 
+            // To determine whether a current board is losing, we can look at its result boards.
             // If a current board is losing, then all of its result boards must be winning.
             boolean allWinningResultBoards = true;
 
@@ -44,6 +57,7 @@ public class Test {
                 // Otherwise, if every single result board is winning, then our current board must be losing.
                 if (!containsBoard(winningBoards, resultBoard)){
                     allWinningResultBoards = false;
+                    board.moveToMake = resultBoard.coordinates;
                     break;
                 }
             }
@@ -56,12 +70,12 @@ public class Test {
             }
         }
 
-        System.out.println("Winning Boards");
+        System.out.println("\nWinning Boards");
         for (Board win : winningBoards){
             System.out.println(win.getBoardState());
         }
 
-        System.out.println("Losing Boards");
+        System.out.println("\nLosing Boards");
         for (Board loss : losingBoards){
             System.out.println(loss.getBoardState());
         }
@@ -69,9 +83,8 @@ public class Test {
 
     /**
      * Generates all starting board states for the 3x3 board
-     * @return ArrayList of Board objects
      */
-    public static ArrayList<Board> generateAllBoardStates(){
+    public ArrayList<Board> generateAllBoardStates(){
         ArrayList<Board> boardStates = new ArrayList<>();
         for (int x = 1; x < 4; x++){
             for (int y = 0; y <= x; y++){
@@ -80,7 +93,6 @@ public class Test {
                 }
             }
         }
-
         return boardStates;
     }
 
@@ -89,7 +101,7 @@ public class Test {
      * @param board int[] array of boardState
      * @return ArrayList of Board objects
      */
-    public static ArrayList<Board> generateResultBoards(int[] board){
+    public ArrayList<Board> generateResultBoards(int[] board){
         // TODO: Generalize result board move-to-make coordinates
         ArrayList<Board> resultBoards = new ArrayList<>();
 
@@ -120,42 +132,40 @@ public class Test {
     }
 
 
+
     /**
      *
-     * @param resultBoards ArrayList of int[] board states
+     * @param boards ArrayList of int[] board states
      * @param board int[] array to be compared
      * @return Boolean representing if the given int[] array is contained in the ArrayList of int[] arrays
      */
-    public static boolean containsBoard(ArrayList<Board> resultBoards, Board board){
-
-        for (Board resultBoard : resultBoards){
+    private boolean containsBoard(ArrayList<Board> boards, Board board){
+        for (Board resultBoard : boards){
             if (Arrays.equals(resultBoard.boardState, board.boardState)) return true;
         }
         return false;
     }
 
-    public static void printEvaluatedBoards(){
+    private boolean containsBoard(ArrayList<Board> boards, int[] board){
+        for (Board resultBoard : boards){
+            if (Arrays.equals(resultBoard.boardState, board)) return true;
+        }
+        return false;
+    }
+
+    public void printEvaluatedBoards(){
         for (Board board : boardStates){
-            System.out.println(Arrays.toString(board.boardState) + ": " + board.isWinning);
+            System.out.println(Arrays.toString(board.boardState) + ": " + board.isWinning + " BEST: " + Arrays.toString(board.moveToMake));
             for (Board result : generateResultBoards(board.boardState)){
 
                 if (containsBoard(winningBoards, result)){
-                    System.out.println("---> " + result.getBoardState() + ": true");
+                    System.out.println("---> " + result.getInfo() + ": true");
                 } else{
-                    System.out.println("---> " + result.getBoardState() + ": false");
+                    System.out.println("---> " + result.getInfo() + ": false");
                 }
-
             }
         }
     }
-
-    public static void printBoardStates(){
-        for (Board board : boardStates){
-            System.out.println(board.getBoardState());
-        }
-    }
-
-
 
     // Generate n by n board (not complete)
     public static ArrayList<int[]> generateAllBoardStates(int gridSize){

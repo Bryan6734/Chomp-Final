@@ -5,6 +5,7 @@ public class Board {
     int[] boardState;
     boolean isWinning;
     int[] coordinates = new int[2];
+    int[] moveToMake = new int[2];
 
     public Board(int[] boardState){
         this.boardState = boardState;
@@ -16,8 +17,11 @@ public class Board {
     }
 
     public String getBoardState(){
-        return Arrays.toString(boardState) + " move: " + Arrays.toString(coordinates);
+        return Arrays.toString(boardState);
     }
 
+    public String getInfo(){
+        return Arrays.toString(boardState) + " move: " + Arrays.toString(coordinates);
+    }
 
 }

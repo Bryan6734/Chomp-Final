@@ -3,35 +3,40 @@ import java.awt.*;
 public class MyPlayer {
     public Chip[][] gameBoard;
     public int[] columns;
+    public ChompSolver chompSolver;
 
     public MyPlayer() {
         columns = new int[10];
-
-        /***
-         * This code will run just once, when the game opens.
-         * Add your code here.
-         */
+        chompSolver = new ChompSolver();
     }
 
-    public Point move(Chip[][] pBoard) {
-
+    public Point move(Chip[][] gameBoard) {
         System.out.println("MyPlayer Move");
 
-        gameBoard = pBoard;
-        int column = 0;
-        int row = 0;
+        this.gameBoard = gameBoard;
+        this.columns = convertGameBoard(gameBoard);
 
-        row = 1;
-        column = 1;
+        int[] moveToMake = chompSolver.getMove(this.columns);
 
-        /**
-         * This code will run each time the "MyPlayer" button is pressed.
-         * Add your code to return the row and the column of the chip you want to take.
-         * You'll be returning a data type called Point which consists of two integers.
-         */
+        int col = moveToMake[1];
+        int row = moveToMake[0];
+        return new Point(row, col);
 
-        Point myMove = new Point(row, column);
-        return myMove;
+    }
+
+    private int[] convertGameBoard(Chip[][] gameBoard){
+        int[] boardState = new int[10];
+
+        for (Chip[] chipsRow : gameBoard) {
+            for (int col = 0; col < chipsRow.length; col++) {
+                if (chipsRow[col].isAlive) {
+                    boardState[col]++;
+                }
+            }
+            System.out.println();
+        }
+
+        return boardState;
     }
 
 }
