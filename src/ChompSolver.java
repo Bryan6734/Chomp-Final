@@ -1,7 +1,5 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class ChompSolver {
 
@@ -11,7 +9,7 @@ public class ChompSolver {
 
     public ChompSolver(){
         boardStates = generateAllBoardStates();
-        determineBoardStates();
+        determineWinningLosingBoards();
         printEvaluatedBoards();
     }
 
@@ -31,7 +29,7 @@ public class ChompSolver {
     /**
      * Assigns a true/false winning value to all board objects inside the boardStates ArrayList
      */
-    public void determineBoardStates(){
+    public void determineWinningLosingBoards(){
 
         // If any result board is a losing board, then the current board must be winning.
         // If all result boards are known winning boards, then the current board must be losing.
@@ -102,12 +100,10 @@ public class ChompSolver {
      * @return ArrayList of Board objects
      */
     public ArrayList<Board> generateResultBoards(int[] board){
-        // TODO: Generalize result board move-to-make coordinates
         ArrayList<Board> resultBoards = new ArrayList<>();
 
         for (int z = board[2] - 1; z >= 0; z--){
             resultBoards.add(new Board(new int[] {board[0], board[1], z}, new int[] {z, 2}));
-
         }
 
         for (int y = board[1] - 1; y >= 0; y--){
@@ -146,12 +142,6 @@ public class ChompSolver {
         return false;
     }
 
-    private boolean containsBoard(ArrayList<Board> boards, int[] board){
-        for (Board resultBoard : boards){
-            if (Arrays.equals(resultBoard.boardState, board)) return true;
-        }
-        return false;
-    }
 
     public void printEvaluatedBoards(){
         for (Board board : boardStates){
@@ -200,7 +190,7 @@ public class ChompSolver {
         [5, 5, 5, 1, 1]
         [5, 5, 5, 0, 0]
         [5, 5, 4, 5, 5]
-        s[0], s[1], s[2], s[2] if s[2] less than s[3], else s[3], s[2] if s[2] less than s[4] else s[4]
+
         [5, 5, 3, 0, 0]
         [5, 5, 2, 0, 0]
         [5, 5, 1, 0, 0]
