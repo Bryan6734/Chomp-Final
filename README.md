@@ -1,5 +1,6 @@
-# Chomp-3x3
-A program to solve 3x3 chomp.
+# Chomp-Final
 
-https://user-images.githubusercontent.com/97413577/214868294-042584ad-75af-433e-91f2-56f70cd997e4.mov
+A program that solves Chomp. World record loading speed.
+
+https://user-images.githubusercontent.com/97413577/214999907-7bab8d97-bdb4-4eed-9a2b-845707abc790.mov
 
