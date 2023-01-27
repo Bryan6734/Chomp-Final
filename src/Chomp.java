@@ -67,6 +67,10 @@ public class Chomp implements Runnable, MouseListener {
     // This section is the setup portion of the program
     // Initialize your variables and construct your program objects here.
     public Chomp() {
+        //players
+        randomPlayer = new RandomPlayer();
+        aiPlayer = new MyPlayer();
+        aiPlayer.unserializeHashMap();
 
         setUpGraphics();
 
@@ -81,9 +85,7 @@ public class Chomp implements Runnable, MouseListener {
         // chipTaken = new SoundFile("takeChip.wav");
         youLose = new SoundFile("sound1.wav");
 
-        //players
-        randomPlayer = new RandomPlayer();
-        aiPlayer = new MyPlayer();
+
 
 
     }//

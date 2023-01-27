@@ -77,6 +77,7 @@ public class ChompSolver {
         for (Board loss : losingBoards){
             System.out.println(loss.getBoardState());
         }
+
     }
 
     /**
@@ -149,9 +150,9 @@ public class ChompSolver {
             for (Board result : generateResultBoards(board.boardState)){
 
                 if (containsBoard(winningBoards, result)){
-                    System.out.println("---> " + result.getInfo() + ": true");
+//                    System.out.println("---> " + result.getInfo() + ": true");
                 } else{
-                    System.out.println("---> " + result.getInfo() + ": false");
+//                    System.out.println("---> " + result.getInfo() + ": false");
                 }
             }
         }

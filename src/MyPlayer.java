@@ -1,13 +1,17 @@
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class MyPlayer {
+    public HashMap<String, int[]> hashmapMoves = new HashMap<>();
     public Chip[][] gameBoard;
     public int[] columns;
-    public ChompSolver chompSolver;
 
     public MyPlayer() {
         columns = new int[10];
-        chompSolver = new ChompSolver();
     }
 
     public Point move(Chip[][] gameBoard) {
@@ -15,12 +19,23 @@ public class MyPlayer {
 
         this.gameBoard = gameBoard;
         this.columns = convertGameBoard(gameBoard);
+        int[] moveToMake;
 
-        int[] moveToMake = chompSolver.getMove(this.columns);
+        if (hashmapMoves.containsKey(Arrays.toString(this.columns))){
+            moveToMake = hashmapMoves.get(Arrays.toString(this.columns));
+            return new Point(moveToMake[0], moveToMake[1]);
+        } else {
+            int randomCol;
+            int randomRow;
 
-        int col = moveToMake[1];
-        int row = moveToMake[0];
-        return new Point(row, col);
+            do {
+                randomRow = (int) (Math.random() * 10);
+                randomCol = (int) (Math.random() * 10);
+            } while(!gameBoard[randomRow][randomCol].isAlive);
+
+            return new Point(randomRow,randomCol);
+        }
+
 
     }
 
@@ -37,6 +52,18 @@ public class MyPlayer {
         }
 
         return boardState;
+    }
+
+    public void unserializeHashMap(){
+        try {
+            FileInputStream fis = new FileInputStream("stringHashmapMoves.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            hashmapMoves = (HashMap<String, int[]>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }
